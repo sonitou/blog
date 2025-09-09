@@ -1,426 +1,202 @@
-import type { Route } from './+types/about'
-import Layout from './components/Layout'
-import avatar from '../assets/avt.png'
+import { Link, useLocation } from 'react-router'
 import { useEffect, useState } from 'react'
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: 'Giới thiệu - MyBlog' },
-    { name: 'description', content: 'Tìm hiểu về tác giả và câu chuyện đằng sau MyBlog' }
-  ]
+type LayoutProps = {
+  children: React.ReactNode
 }
 
-export default function About() {
-  const [isVisible, setIsVisible] = useState(false)
+export default function Layout({ children }: LayoutProps) {
+  const location = useLocation()
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  const isActive = (path: string) => location.pathname === path
 
   useEffect(() => {
-    setIsVisible(true)
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true)
+      document.documentElement.classList.add('dark')
+    } else {
+      setIsDarkMode(false)
+      document.documentElement.classList.remove('dark')
+    }
   }, [])
 
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode
+    setIsDarkMode(newMode)
+
+    if (newMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }
+
   return (
-    <Layout>
-      <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-        {/* Hero Section */}
-        <header className='text-center mb-20 relative overflow-hidden'>
-          {/* Background Animation */}
-          <div className='absolute inset-0 -z-10'>
-            <div className='absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-pulse'></div>
-            <div className='absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-400/10 rounded-full blur-3xl animate-pulse delay-1000'></div>
-          </div>
-
-          <div
-            className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-          >
-            <div className='relative inline-block'>
-              <div className='w-40 h-40 rounded-full overflow-hidden mx-auto ring-4 ring-blue-200 dark:ring-blue-800 shadow-2xl hover:scale-105 transition-transform duration-300'>
-                <img
-                  src={avatar}
-                  alt='Ảnh đại diện Đỗ Công Sơn'
-                  className='w-full h-full object-cover'
-                  loading='lazy'
-                  width={160}
-                  height={160}
-                />
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800'>
+      {/* Header */}
+      <header className='bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='flex justify-between items-center h-16'>
+            {/* Logo */}
+            <Link to='/' className='flex items-center space-x-2'>
+              <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
+                <span className='text-white font-bold text-lg'>B</span>
               </div>
-              {/* Floating elements */}
-              <div className='absolute -top-4 -right-4 w-8 h-8 bg-green-500 rounded-full animate-bounce'></div>
-              <div className='absolute -bottom-4 -left-4 w-6 h-6 bg-blue-500 rounded-full animate-bounce delay-500'></div>
-              <div className='absolute top-1/2 -right-8 w-4 h-4 bg-purple-500 rounded-full animate-bounce delay-1000'></div>
-            </div>
+              <span className='text-xl font-bold text-slate-900 dark:text-white'>MyBlog</span>
+            </Link>
 
-            <h1 className='text-5xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6 mt-8'>
-              Xin chào, tôi là{' '}
-              <span className='bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient'>
-                Đỗ Công Sơn
-              </span>
-            </h1>
-            <p className='text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed'>
-              Một <span className='font-semibold text-blue-600 dark:text-blue-400'>Backend Developer</span> với niềm đam
-              mê chia sẻ kiến thức và kinh nghiệm trong lĩnh vực lập trình và công nghệ.
-            </p>
-          </div>
-        </header>
-
-        {/* About Content */}
-        <section className='grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16'>
-          <div>
-            <h2 className='text-3xl font-bold text-slate-900 dark:text-white mb-6'>Câu chuyện của tôi</h2>
-            <div className='space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed'>
-              <p>
-                Tôi bắt đầu hành trình lập trình từ năm 2020 khi còn là sinh viên ngành Công nghệ thông tin. Từ những
-                dòng code đầu tiên viết bằng C++, tôi đã bị cuốn hút bởi sức mạnh của lập trình.
-              </p>
-              <p>
-                Sau 4 năm học tập và rèn luyện kỹ năng, tôi có cơ hội làm việc với nhiều công nghệ: từ frontend với
-                React đến backend với Node.js.
-              </p>
-              <p>
-                Blog này được tạo ra để chia sẻ kiến thức, kinh nghiệm và những bài học tôi tích lũy trong quá trình làm
-                việc và học tập.
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h2 className='text-3xl font-bold text-slate-900 dark:text-white mb-6'>Kỹ năng & Công nghệ</h2>
-            <div className='space-y-6'>
-              <div>
-                <h3 className='text-lg font-semibold text-slate-900 dark:text-white mb-3'>Frontend</h3>
-                <div className='flex flex-wrap gap-2'>
-                  {['React', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Sass'].map((skill) => (
-                    <span
-                      key={skill}
-                      className='bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm'
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className='text-lg font-semibold text-slate-900 dark:text-white mb-3'>Backend</h3>
-                <div className='flex flex-wrap gap-2'>
-                  {['Node.js', 'NestJS', 'Express.js', 'PostgreSQL', 'MongoDB'].map((skill) => (
-                    <span
-                      key={skill}
-                      className='bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-3 py-1 rounded-full text-sm'
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className='text-lg font-semibold text-slate-900 dark:text-white mb-3'>DevOps & Tools</h3>
-                <div className='flex flex-wrap gap-2'>
-                  {['Docker', 'Git', 'Postman', 'Swagger'].map((skill) => (
-                    <span
-                      key={skill}
-                      className='bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full text-sm'
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Timeline */}
-        <section className='mb-20'>
-          <div className='text-center mb-16'>
-            <h2 className='text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4'>
-              <span className='bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent'>
-                Hành trình nghề nghiệp
-              </span>
-            </h2>
-            <p className='text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto'>
-              Các cột mốc quan trọng trong sự nghiệp phát triển backend của tôi
-            </p>
-          </div>
-
-          <div className='relative'>
-            {/* Timeline line */}
-            <div className='absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500'></div>
-
-            <div className='space-y-12'>
-              {/* Intern Backend */}
-              <div
-                className={`relative flex items-start space-x-8 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+            {/* Navigation */}
+            <nav className='hidden md:flex space-x-8'>
+              <Link
+                to='/'
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive('/')
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
               >
-                <div className='relative z-10'>
-                  <div className='w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg'>
-                    <span className='text-white font-bold text-xl'>I</span>
-                  </div>
-                  <div className='absolute -left-1 top-8 w-4 h-4 bg-blue-600 rounded-full border-4 border-white dark:border-slate-900'></div>
-                </div>
-
-                <div className='flex-1 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'>
-                  <div className='flex items-center gap-4 mb-4'>
-                    <h3 className='text-2xl font-bold text-slate-900 dark:text-white'>Intern Backend Node.js</h3>
-                    <span className='px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full font-medium'>
-                      Internship
-                    </span>
-                  </div>
-
-                  <p className='text-blue-600 dark:text-blue-400 font-semibold mb-6 text-lg'>
-                    CÔNG TY TNHH SUNNYLEE MEDIA • 6/2023 - 10/2023
-                  </p>
-
-                  <div className='grid md:grid-cols-2 gap-6'>
-                    <div className='space-y-4'>
-                      <div className='flex items-start gap-3'>
-                        <div className='w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0'></div>
-                        <div>
-                          <span className='font-semibold text-slate-800 dark:text-slate-100'>
-                            Xây dựng & phát triển API:
-                          </span>
-                          <p className='text-slate-600 dark:text-slate-300 mt-1'>
-                            Tham gia xây dựng các API RESTful bằng Node.js & Express.js để xử lý nghiệp vụ CRUD (người
-                            dùng, sản phẩm).
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className='flex items-start gap-3'>
-                        <div className='w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0'></div>
-                        <div>
-                          <span className='font-semibold text-slate-800 dark:text-slate-100'>
-                            Làm việc với Database:
-                          </span>
-                          <p className='text-slate-600 dark:text-slate-300 mt-1'>
-                            Thiết kế schema & thực hiện truy vấn với MongoDB / PostgreSQL.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className='space-y-4'>
-                      <div className='flex items-start gap-3'>
-                        <div className='w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0'></div>
-                        <div>
-                          <span className='font-semibold text-slate-800 dark:text-slate-100'>
-                            Viết tài liệu & xác thực API:
-                          </span>
-                          <p className='text-slate-600 dark:text-slate-300 mt-1'>
-                            Kiểm thử endpoint bằng Postman, viết tài liệu API bằng Swagger hỗ trợ frontend tích hợp.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className='flex items-start gap-3'>
-                        <div className='w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0'></div>
-                        <div>
-                          <span className='font-semibold text-slate-800 dark:text-slate-100'>Sửa lỗi & bảo trì:</span>
-                          <p className='text-slate-600 dark:text-slate-300 mt-1'>
-                            Phân tích, tìm & sửa bug phát sinh dưới sự hướng dẫn của mentor.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className='mt-6 flex flex-wrap gap-2'>
-                    <span className='px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full'>
-                      Node.js
-                    </span>
-                    <span className='px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full'>
-                      Express.js
-                    </span>
-                    <span className='px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full'>
-                      MongoDB
-                    </span>
-                    <span className='px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-sm rounded-full'>
-                      PostgreSQL
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Personal Projects */}
-              <div
-                className={`relative flex items-start space-x-8 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+                Trang chủ
+              </Link>
+              <Link
+                to='/about'
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive('/about')
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
               >
-                <div className='relative z-10'>
-                  <div className='w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl flex items-center justify-center shadow-lg'>
-                    <span className='text-white font-bold text-xl'>P</span>
-                  </div>
-                  <div className='absolute -left-1 top-8 w-4 h-4 bg-green-600 rounded-full border-4 border-white dark:border-slate-900'></div>
-                </div>
+                Giới thiệu
+              </Link>
+              <Link
+                to='/contact'
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive('/contact')
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Liên hệ
+              </Link>
+            </nav>
 
-                <div className='flex-1 space-y-8'>
-                  <div className='bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1'>
-                    <div className='flex items-center gap-4 mb-6'>
-                      <h3 className='text-2xl font-bold text-slate-900 dark:text-white'>Personal Projects</h3>
-                      <span className='px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full font-medium'>
-                        Freelance
-                      </span>
-                    </div>
+            {/* Theme toggle and Mobile menu */}
+            <div className='flex items-center gap-4'>
+              {/* Dark mode toggle */}
+              <button
+                onClick={toggleDarkMode}
+                className='p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200 hover:scale-105'
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z'
+                    />
+                  </svg>
+                ) : (
+                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z'
+                    />
+                  </svg>
+                )}
+              </button>
 
-                    <div className='grid md:grid-cols-2 gap-8'>
-                      {[
-                        {
-                          name: 'E-commerce Backend',
-                          period: '2/2025 - hiện tại',
-                          icon: '🛒',
-                          color: 'blue',
-                          points: [
-                            'Xây dựng hệ thống thương mại điện tử hỗ trợ nhiều sản phẩm (SKU, thương hiệu, danh mục, đa ngôn ngữ), thanh toán trực tuyến và cập nhật đơn hàng theo thời gian thực.',
-                            'Thiết kế backend mô-đun với NestJS + PostgreSQL; tối ưu truy vấn bằng Prisma & indexing; tích hợp cổng thanh toán Sepay và xử lý callback qua WebSocket; triển khai xác thực & phân quyền (JWT, OAuth2, 2FA, Role/Permission); viết tài liệu API bằng Swagger.'
-                          ],
-                          result:
-                            'API cải thiện hiệu năng đáng kể; theo dõi đơn hàng thời gian thực tăng trải nghiệm người dùng; tài liệu API giúp giảm 30% thời gian tích hợp frontend.',
-                          tech: ['NestJS', 'TypeScript', 'PostgreSQL', 'Prisma', 'Redis', 'WebSocket'],
-                          github: 'https://github.com/sonitou/Ecommerce_BE'
-                        },
-                        {
-                          name: 'Social Network API',
-                          period: '10/2024 - 6/2025',
-                          icon: '🌐',
-                          color: 'purple',
-                          points: [
-                            'Xây dựng backend cho mạng xã hội hỗ trợ CRUD (bài viết, bình luận…), upload media, và thông báo theo thời gian thực.',
-                            'Triển khai với Express.js + MongoDB; xác thực bằng JWT, Refresh Token, Google OAuth2; tích hợp AWS S3 cho upload media an toàn; thông báo real-time (likes, retweets, mentions) qua WebSocket.'
-                          ],
-                          result:
-                            'Hệ thống backend ổn định, xử lý CRUD nhanh; media upload an toàn; xác thực bảo mật; thông báo real-time tăng tương tác người dùng.',
-                          tech: ['Express.js', 'MongoDB', 'AWS S3', 'WebSocket', 'JWT'],
-                          github: 'https://github.com/sonitou/twitter_Api'
-                        }
-                      ].map((p, index) => (
-                        <article
-                          key={p.name}
-                          className={`group relative rounded-xl border border-slate-200 dark:border-slate-700 p-6 bg-gradient-to-br from-${p.color}-50/50 to-${p.color}-100/50 dark:from-${p.color}-900/20 dark:to-${p.color}-800/20 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
-                          style={{ animationDelay: `${index * 200 + 600}ms` }}
-                        >
-                          <div className='flex items-center gap-3 mb-4'>
-                            <div
-                              className={`w-12 h-12 bg-gradient-to-r from-${p.color}-600 to-${p.color}-700 rounded-xl flex items-center justify-center text-xl`}
-                            >
-                              {p.icon}
-                            </div>
-                            <div>
-                              <h4 className='text-lg font-bold text-slate-900 dark:text-white'>{p.name}</h4>
-                              <p className={`text-${p.color}-600 dark:text-${p.color}-400 text-sm font-medium`}>
-                                {p.period}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className='space-y-3 text-slate-600 dark:text-slate-300'>
-                            {p.points.map((point, i) => (
-                              <div key={i} className='flex items-start gap-2'>
-                                <span
-                                  className={`w-1.5 h-1.5 bg-${p.color}-500 rounded-full mt-2 flex-shrink-0`}
-                                ></span>
-                                <span className='text-sm'>{point}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          <div className='mt-4 p-3 bg-slate-100 dark:bg-slate-700 rounded-lg'>
-                            <p className='text-sm'>
-                              <span className='font-semibold text-slate-800 dark:text-slate-100'>Kết quả:</span>{' '}
-                              {p.result}
-                            </p>
-                          </div>
-
-                          <div className='mt-4 flex flex-wrap gap-2'>
-                            {p.tech.map((tech) => (
-                              <span
-                                key={tech}
-                                className={`px-2 py-1 bg-${p.color}-100 dark:bg-${p.color}-900 text-${p.color}-800 dark:text-${p.color}-200 text-xs rounded-full`}
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-
-                          {p.github && (
-                            <div className='mt-4'>
-                              <a
-                                href={p.github}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                className={`group/link inline-flex items-center gap-2 text-${p.color}-600 dark:text-${p.color}-400 hover:text-${p.color}-700 dark:hover:text-${p.color}-300 font-medium text-sm transition-colors`}
-                              >
-                                <span>🔗 GitHub Repository</span>
-                                <svg
-                                  className='w-4 h-4 group-hover/link:translate-x-1 transition-transform'
-                                  fill='none'
-                                  stroke='currentColor'
-                                  viewBox='0 0 24 24'
-                                >
-                                  <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    strokeWidth={2}
-                                    d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14'
-                                  />
-                                </svg>
-                              </a>
-                            </div>
-                          )}
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              {/* Mobile menu button */}
+              <div className='md:hidden'>
+                <button className='text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'>
+                  <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </header>
 
-        {/* Contact CTA */}
-        <section
-          aria-labelledby='contact-title'
-          className='bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white'
-        >
-          <h3 id='contact-title' className='text-2xl font-bold mb-4'>
-            Liên hệ & Kết nối
-          </h3>
-          <p className='text-blue-100 mb-6 max-w-2xl mx-auto'>
-            Tôi đang tìm kiếm cơ hội để phát triển trong lĩnh vực Backend Development. Nếu anh/chị quan tâm, hãy kết nối
-            với tôi qua các kênh sau:
-          </p>
+      {/* Main content */}
+      <main className='flex-1'>{children}</main>
 
-          <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <a
-              href='/contact'
-              className='flex items-center justify-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors'
-            >
-              📧 Email
-            </a>
+      {/* Footer */}
+      <footer className='bg-slate-900 dark:bg-slate-950 text-white'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+            <div>
+              <div className='flex items-center space-x-2 mb-4'>
+                <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center'>
+                  <span className='text-white font-bold text-lg'>B</span>
+                </div>
+                <span className='text-xl font-bold'>MyBlog</span>
+              </div>
+              <p className='text-slate-400'>
+                Một Backend Developer với niềm đam mê chia sẻ kiến thức và kinh nghiệm trong lĩnh vực lập trình và công
+                nghệ.
+              </p>
+            </div>
 
-            {/* GitHub */}
-            <a
-              href='https://github.com/sonitou'
-              target='_blank'
-              rel='noopener noreferrer me'
-              aria-label='Xem GitHub của tôi'
-              className='flex items-center justify-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-900 transition-colors'
-              title='Mở GitHub trong tab mới'
-            >
-              💻 GitHub
-            </a>
+            <div>
+              <h3 className='text-lg font-semibold mb-4'>Liên kết nhanh</h3>
+              <ul className='space-y-2'>
+                <li>
+                  <Link to='/' className='text-slate-400 hover:text-white transition-colors'>
+                    Trang chủ
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/about' className='text-slate-400 hover:text-white transition-colors'>
+                    Giới thiệu
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/contact' className='text-slate-400 hover:text-white transition-colors'>
+                    Liên hệ
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-            {/* Resume PDF: mở tab + có download tên file đẹp + type */}
-            <a
-              href='https://www.topcv.vn/documents/view/eyJpdiI6IkVYMEdvemREbW9Ramg1cUJwcjIzMFE9PSIsInZhbHVlIjoiaElwd1NzWVNZRTRnYzZ6SHpXMi8rYk5jTEg4dFZ6WGpDc1dDUFVzbHYwdmxFY0QyY2dHZkFXOW5OYnpzNjJlbXhuYTJXdlB1NU5WSkt1UjQrUkQ2WXRaRzFuc0traHR4L0NlWllmdmF3Y2FUcDhrSFhzSGhDdkdIWGVSMmphc1ciLCJtYWMiOiIwYzNjYzc1NTIyOTlhM2M3ODY1ZjU0NDgxY2ZlZTZmYjY5MDg2ODI0NjE0ODFmZWFlZmQxYjc4Y2M0ZjQ3YzNjIiwidGFnIjoiIn0='
-              target='_blank'
-              rel='noopener noreferrer'
-              aria-label='Xem CV của tôi trên TopCV'
-              className='flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors'
-              title='Xem CV trên TopCV'
-            >
-              📄 CV trên TopCV
-            </a>
+            <div>
+              <h3 className='text-lg font-semibold mb-4'>Theo dõi</h3>
+              <div className='flex space-x-4'>
+                <a href='#' className='text-slate-400 hover:text-white transition-colors'>
+                  <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
+                    <path d='M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z' />
+                  </svg>
+                </a>
+                <a href='#' className='text-slate-400 hover:text-white transition-colors'>
+                  <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
+                    <path d='M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z' />
+                  </svg>
+                </a>
+                <a href='#' className='text-slate-400 hover:text-white transition-colors'>
+                  <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
+                    <path d='M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z' />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
-        </section>
-      </div>
-    </Layout>
+
+          <div className='border-t border-slate-800 mt-8 pt-8 text-center text-slate-400'>
+            <p>&copy; 2024 MyBlog. Tất cả quyền được bảo lưu.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 }
