@@ -20,9 +20,15 @@ export default function Layout({ children }: LayoutProps) {
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
       setIsDarkMode(true)
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
+      document.documentElement.setAttribute('data-theme', 'dark')
+      document.documentElement.style.colorScheme = 'dark'
     } else {
       setIsDarkMode(false)
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
+      document.documentElement.setAttribute('data-theme', 'light')
+      document.documentElement.style.colorScheme = 'light'
     }
   }, [])
 
@@ -37,15 +43,23 @@ export default function Layout({ children }: LayoutProps) {
 
     if (newMode) {
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
       localStorage.setItem('theme', 'dark')
+      document.documentElement.setAttribute('data-theme', 'dark')
+      document.documentElement.style.colorScheme = 'dark'
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
       localStorage.setItem('theme', 'light')
+      document.documentElement.setAttribute('data-theme', 'light')
+      document.documentElement.style.colorScheme = 'light'
     }
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800'>
+    <div
+      className={`${isDarkMode ? 'dark' : ''} min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 transition-colors duration-300`}
+    >
       {/* Header */}
       <header className='bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
