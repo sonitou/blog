@@ -8,6 +8,7 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const isActive = (path: string) => location.pathname === path
 
@@ -24,6 +25,11 @@ export default function Layout({ children }: LayoutProps) {
       document.documentElement.classList.remove('dark')
     }
   }, [])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [location.pathname])
 
   const toggleDarkMode = () => {
     const newMode = !isDarkMode
@@ -118,7 +124,12 @@ export default function Layout({ children }: LayoutProps) {
 
               {/* Mobile menu button */}
               <div className='md:hidden'>
-                <button className='text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'>
+                <button
+                  onClick={() => setIsMenuOpen((prev) => !prev)}
+                  aria-label='Mở menu điều hướng'
+                  aria-expanded={isMenuOpen}
+                  className='text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'
+                >
                   <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                     <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
                   </svg>
@@ -126,6 +137,46 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
+          {/* Mobile dropdown menu */}
+          {isMenuOpen && (
+            <div className='md:hidden mt-2 pb-2'>
+              <nav className='space-y-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur rounded-xl p-3 shadow-lg border border-slate-200 dark:border-slate-700'>
+                <Link
+                  to='/'
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                    isActive('/')
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  Trang chủ
+                </Link>
+                <Link
+                  to='/about'
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                    isActive('/about')
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  Giới thiệu
+                </Link>
+                <Link
+                  to='/contact'
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                    isActive('/contact')
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  Liên hệ
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 

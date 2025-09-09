@@ -145,9 +145,10 @@ export default function Contact() {
               className={`transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             >
               <a
-                href='https://www.topcv.vn/documents/view/eyJpdiI6IkVYMEdvemREbW9Ramg1cUJwcjIzMFE9PSIsInZhbHVlIjoiaElwd1NzWVNZRTRnYzZ6SHpXMi8rYk5jTEg4dFZ6WGpDc1dDUFVzbHYwdmxFY0QyY2dHZkFXOW5OYnpzNjJlbXhuYTJXdlB1NU5WSkt1UjQrUkQ2WXRaRzFuc0traHR4L0NlWllmdmF3Y2FUcDhrSFhzSGhDdkdIWGVSMmphc1ciLCJtYWMiOiIwYzNjYzc1NTIyOTlhM2M3ODY1ZjU0NDgxY2ZlZTZmYjY5MDg2ODI0NjE0ODFmZWFlZmQxYjc4Y2M0ZjQ3YzNjIiwidGFnIjoiIn0='
+                href='https://drive.google.com/file/d/1khZCTNdCQ6LVxwcC8IQJE4cX1ZeS8-EF/view?usp=sharing'
                 target='_blank'
                 rel='noopener noreferrer'
+                referrerPolicy='no-referrer'
                 aria-label='Xem CV của Đỗ Công Sơn trên TopCV'
                 title='Xem CV của Đỗ Công Sơn trên TopCV'
                 className='group block bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 text-center'
@@ -195,6 +196,7 @@ export default function Contact() {
                   href='https://www.topcv.vn/documents/view/eyJpdiI6IkVYMEdvemREbW9Ramg1cUJwcjIzMFE9PSIsInZhbHVlIjoiaElwd1NzWVNZRTRnYzZ6SHpXMi8rYk5jTEg4dFZ6WGpDc1dDUFVzbHYwdmxFY0QyY2dHZkFXOW5OYnpzNjJlbXhuYTJXdlB1NU5WSkt1UjQrUkQ2WXRaRzFuc0traHR4L0NlWllmdmF3Y2FUcDhrSFhzSGhDdkdIWGVSMmphc1ciLCJtYWMiOiIwYzNjYzc1NTIyOTlhM2M3ODY1ZjU0NDgxY2ZlZTZmYjY5MDg2ODI0NjE0ODFmZWFlZmQxYjc4Y2M0ZjQ3YzNjIiwidGFnIjoiIn0='
                   target='_blank'
                   rel='noopener noreferrer'
+                  referrerPolicy='no-referrer'
                   className='flex items-center justify-center gap-2 bg-green-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors'
                 >
                   📄 Xem CV trên TopCV

@@ -485,9 +485,10 @@ export default function About() {
             </a>
 
             <a
-              href='https://www.topcv.vn/documents/view/eyJpdiI6IkVYMEdvemREbW9Ramg1cUJwcjIzMFE9PSIsInZhbHVlIjoiaElwd1NzWVNZRTRnYzZ6SHpXMi8rYk5jTEg4dFZ6WGpDc1dDUFVzbHYwdmxFY0QyY2dHZkFXOW5OYnpzNjJlbXhuYTJXdlB1NU5WSkt1UjQrUkQ2WXRaRzFuc0traHR4L0NlWllmdmF3Y2FUcDhrSFhzSGhDdkdIWGVSMmphc1ciLCJtYWMiOiIwYzNjYzc1NTIyOTlhM2M3ODY1ZjU0NDgxY2ZlZTZmYjY5MDg2ODI0NjE0ODFmZWFlZmQxYjc4Y2M0ZjQ3YzNjIiwidGFnIjoiIn0='
+              href='https://drive.google.com/file/d/1khZCTNdCQ6LVxwcC8IQJE4cX1ZeS8-EF/view?usp=sharing'
               target='_blank'
               rel='noopener noreferrer'
+              referrerPolicy='no-referrer'
               aria-label='Xem CV của tôi trên TopCV'
               className='flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors'
               title='Xem CV trên TopCV'

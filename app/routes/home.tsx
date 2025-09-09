@@ -49,9 +49,10 @@ export default function Home() {
 
             <div className='flex flex-col sm:flex-row gap-4 justify-center mb-16'>
               <a
-                href='https://www.topcv.vn/documents/view/eyJpdiI6IkVYMEdvemREbW9Ramg1cUJwcjIzMFE9PSIsInZhbHVlIjoiaElwd1NzWVNZRTRnYzZ6SHpXMi8rYk5jTEg4dFZ6WGpDc1dDUFVzbHYwdmxFY0QyY2dHZkFXOW5OYnpzNjJlbXhuYTJXdlB1NU5WSkt1UjQrUkQ2WXRaRzFuc0traHR4L0NlWllmdmF3Y2FUcDhrSFhzSGhDdkdIWGVSMmphc1ciLCJtYWMiOiIwYzNjYzc1NTIyOTlhM2M3ODY1ZjU0NDgxY2ZlZTZmYjY5MDg2ODI0NjE0ODFmZWFlZmQxYjc4Y2M0ZjQ3YzNjIiwidGFnIjoiIn0='
+                href='https://drive.google.com/file/d/1khZCTNdCQ6LVxwcC8IQJE4cX1ZeS8-EF/view?usp=sharing'
                 target='_blank'
                 rel='noopener noreferrer'
+                referrerPolicy='no-referrer'
                 className='group px-8 py-4 rounded-xl bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
               >
                 <span className='flex items-center gap-2'>
